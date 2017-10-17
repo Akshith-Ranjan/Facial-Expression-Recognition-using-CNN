@@ -36,10 +36,10 @@ $ python csv-npy.py
 ```bash
 $ python training.py
 ```
-    ##### Note:
-       * Once the training of cnn is complete the program will create some files in the temp folder.
-       * All the steps above are only required to be performed once.
-       * Once the temp files are created then you can run the code below.
+   ##### Note:
+      * Once the training of cnn is complete the program will create some files in the temp folder.
+      * All the steps above are only required to be performed once.
+      * Once the temp files are created then you can run the code below.
 * Run the Recdelay.py
 ```bash
 $ python recdelay.py
