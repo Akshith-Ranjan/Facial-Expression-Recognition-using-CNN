@@ -25,6 +25,6 @@ $ python training.py
 ```
 * Run the Recdelay.py
 ```bash
-$ python recdelay.py poc
+$ python recdelay.py
 ```
 
