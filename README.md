@@ -15,16 +15,15 @@ Project about mood recognition using convolutional neural network for my college
 
 ## Usage
 ### Divide the FER2013 dataset into training and testing set.
-   * I divided the dataset manually by copy pasting the csv file content in two different files.
-   * I used 80% of the file for training and 20 % for testing.
+   * Divided the dataset manually by copy pasting the csv file content in two different files.
+   * (I used 80% of the file for training and 20 % for testing.)
    * Just copy 80% of the csv into one file and rest in another file
-   * Since the csv files are very large your text editor may become slow while displaying the large file.
+   * (Since the csv files are very large your text editor may become slow while displaying the large file.)
    * Give the two file name as test.csv and train.csv respectively and copy them to temp directory.
-  
-* Convert the .csv files to npy object by running csv-npy.py
-```bash
-$ python csv-npy.py
-```
+   * Convert the .csv files to npy object by running csv-npy.py as show below.
+   ```bash
+   $ python csv-npy.py
+   ```
    #### Note: 
      * You need to do this step twice, once for test.csv and then for train.csv
      * (Dont forget change the file names in the code of csv-npy.py program when running the second time for test.csv)
