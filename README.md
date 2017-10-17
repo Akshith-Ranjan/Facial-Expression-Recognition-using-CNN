@@ -11,7 +11,7 @@ Project about mood recognition using convolutional neural network for my college
 
 ## Dataset
 
--FER2013 dataset [Kraggle](https://www.kaggle.com/c/challenges-in-representation-learning-facial-expression-recognition-challenge/data).
+* FER2013 dataset [Kraggle](https://www.kaggle.com/c/challenges-in-representation-learning-facial-expression-recognition-challenge/data).
 
 ## Usage
 ### Divide the FER2013 dataset into training and testing set.
@@ -36,7 +36,7 @@ $ python csv-npy.py
 ```bash
 $ python training.py
 ```
-   ##### Note:
+   #### Note:
       * Once the training of cnn is complete the program will create some files in the temp folder.
       * All the steps above are only required to be performed once.
       * Once the temp files are created then you can run the code below.
