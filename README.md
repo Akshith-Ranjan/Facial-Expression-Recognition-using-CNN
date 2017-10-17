@@ -25,10 +25,10 @@ Project about mood recognition using convolutional neural network for my college
    $ python csv-npy.py
    ```
    #### Note: 
-     * You need to do this step twice, once for test.csv and then for train.csv
-     * (Dont forget change the file names in the code of csv-npy.py program when running the second time for test.csv)
-     * On run this command for both the csv files, it will create testing.npy and training.npy files in temp directory.
-     * This files are required for training 
+   * You need to do this step twice, once for test.csv and then for train.csv
+   * (Dont forget change the file names in the code of csv-npy.py program when running the second time for test.csv)
+   * On run this command for both the csv files, it will create testing.npy and training.npy files in temp directory.
+   * This files are required for training 
   
   
 ## Train the CNN by running training.py 
@@ -36,9 +36,9 @@ Project about mood recognition using convolutional neural network for my college
 $ python training.py
 ```
    #### Note:
-      * All the steps above are only required to be performed once.
-      * Once the training of CNN is complete the program will create some files in the temp folder.
-      * Once the temp files are created then you can run the code below.
+   * All the steps above are only required to be performed once.
+   * Once the training of CNN is complete the program will create some files in the temp folder.
+   * Once the temp files are created then you can run the code below.
 ## Run the Recdelay.py
 ```bash
 $ python recdelay.py
