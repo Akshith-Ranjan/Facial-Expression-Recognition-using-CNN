@@ -13,8 +13,8 @@ Project about mood recognition using convolutional neural network for my college
 
 * FER2013 dataset [Kraggle](https://www.kaggle.com/c/challenges-in-representation-learning-facial-expression-recognition-challenge/data).
 
-## Usage
-### Divide the FER2013 dataset into training and testing set.
+# Usage
+## Divide the FER2013 dataset into training and testing set.
    * Divided the dataset manually by copy pasting the csv file content in two different files.
    * (I used 80% of the file for training and 20 % for testing.)
    * Just copy 80% of the csv into one file and rest in another file
@@ -31,15 +31,15 @@ Project about mood recognition using convolutional neural network for my college
      * This files are required for training 
   
   
-### Train the CNN by running training.py 
+## Train the CNN by running training.py 
 ```bash
 $ python training.py
 ```
    #### Note:
-      * Once the training of cnn is complete the program will create some files in the temp folder.
       * All the steps above are only required to be performed once.
+      * Once the training of CNN is complete the program will create some files in the temp folder.
       * Once the temp files are created then you can run the code below.
-### Run the Recdelay.py
+## Run the Recdelay.py
 ```bash
 $ python recdelay.py
 ```
