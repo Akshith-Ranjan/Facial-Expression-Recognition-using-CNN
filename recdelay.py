@@ -44,7 +44,7 @@ def format_image(image):
     # print image.shape
     print(image.shape)
     return image
-#---------------------------------------------------------
+
 
 network = input_data(shape=[None, SIZE_FACE, SIZE_FACE, 1])
 network = conv_2d(network, 64, 5, activation='relu')
@@ -69,7 +69,7 @@ else:
 print('[+] Model loaded from '+SAVE_MODEL_FILENAME)
 cascade_classifier = cv2.CascadeClassifier(CASC_PATH)
 
-video_capture = cv2.VideoCapture(1)
+video_capture = cv2.VideoCapture(0)
 font = cv2.FONT_HERSHEY_SIMPLEX
 
 
@@ -93,9 +93,8 @@ while True:
                 cv2.putText(frame, emotion, (10, index * 20 + 20), cv2.FONT_HERSHEY_PLAIN, 0.5, (0, 255, 0), 1)
                 cv2.rectangle(frame, (130, index * 20 + 10), (130 + int(result[0][index] * 100), (index + 1) * 20 + 4), (255, 0, 0), -1)
 
-            
 
-        # Display the resulting frame
+
         cv2.imshow('Video', frame)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):

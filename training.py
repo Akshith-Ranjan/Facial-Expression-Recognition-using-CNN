@@ -16,10 +16,10 @@ SIZE_FACE = 48
 EMOTIONS = ['angry', 'happy', 'sad', 'surprised', 'neutral']
 SAVE_DIRECTORY = './temp/'
 SAVE_MODEL_FILENAME = './temp/saved.tf'
-SAVE_DATASET_IMAGES_FILENAME = './temp/data_training.npy'
-SAVE_DATASET_LABELS_FILENAME = './temp/labels_training.npy'
-SAVE_DATASET_IMAGES_TEST_FILENAME = './temp/data_testing.npy'
-SAVE_DATASET_LABELS_TEST_FILENAME = './temp/labels_testing.npy'
+SAVE_DATASET_IMAGES_FILENAME = './data/data_train.npy'
+SAVE_DATASET_LABELS_FILENAME = './data/labels_train.npy'
+SAVE_DATASET_IMAGES_TEST_FILENAME = './data/data_test.npy'
+SAVE_DATASET_LABELS_TEST_FILENAME = './data/labels_test.npy'
 cascade_classifier = cv2.CascadeClassifier(CASC_PATH)
 
 def format_image(image):
@@ -46,6 +46,9 @@ def format_image(image):
     # print image.shape
     print(image.shape)
     return image
+
+
+
 training_data = np.load(SAVE_DATASET_IMAGES_FILENAME)
 training_labels = np.load( SAVE_DATASET_LABELS_FILENAME)
 testing_data = np.load(SAVE_DATASET_IMAGES_TEST_FILENAME)
@@ -59,16 +62,15 @@ testing_labels = testing_labels.reshape([-1, len(EMOTIONS)])
 
 network = input_data(shape=[None, SIZE_FACE, SIZE_FACE, 1])
 network = conv_2d(network, 64, 5, activation='relu')
-network = max_pool_2d(network, 3,strides=2)
+network = max_pool_2d(network, 3, strides=2)
 network = conv_2d(network, 64, 5, activation='relu')
-network = max_pool_2d(network, 3,strides=2)
+network = max_pool_2d(network, 3, strides=2)
 network = conv_2d(network, 128, 4, activation='relu')
 network = dropout(network, 0.3)
-network = fully_connected(network,3072,activation='relu')
+network = fully_connected(network, 3072, activation='relu')
 network = fully_connected(network, len(EMOTIONS), activation='softmax')
 network = regression(network, optimizer='momentum', loss='categorical_crossentropy', learning_rate=0.001)
-model = tflearn.DNN(network, checkpoint_path= './temp/checkpoint.ckpt',
-                         max_checkpoints=1, tensorboard_verbose=2)
+model = tflearn.DNN(network, checkpoint_path='./temp/checkpoint.ckpt', max_checkpoints=1, tensorboard_verbose=2)
 
 if os.path.exists('{}.meta'.format(SAVE_MODEL_FILENAME)):
     model.load(SAVE_MODEL_FILENAME)
@@ -77,18 +79,17 @@ else:
     print("model load failed!")
 
 model.fit(
-    training_data, training_labels,
-            validation_set = (testing_data, testing_labels),
-            n_epoch = 25,
-            batch_size = 50,
-            shuffle = True,
-            show_metric = True,
-            snapshot_step = 200,
-            snapshot_epoch = True,
-            run_id = 'emotion_recognition1'
-        )
+    training_data,
+    training_labels,
+    validation_set=(testing_data, testing_labels),
+    n_epoch=10,
+    batch_size=50,
+    shuffle=True,
+    show_metric=True,
+    snapshot_step=200,
+    snapshot_epoch=True,
+    run_id='emotion_recognition1'
+    )
 
 model.save(SAVE_MODEL_FILENAME)
-print('[+] Model trained and saved at '+SAVE_MODEL_FILENAME)
-
-# ----------------------------------------------------------------------------------------=
+print('[+] Model trained and saved at ' + SAVE_MODEL_FILENAME)

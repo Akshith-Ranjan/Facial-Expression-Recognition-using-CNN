@@ -1,26 +1,34 @@
 import numpy as np
 import pandas as pd
 import cv2
+import argparse
 
 SIZE_FACE = 48
 EMOTIONS = ['angry', 'happy', 'sad', 'surprised', 'neutral']
 CASC_PATH = './haarcascade_files/haarcascade_frontalface_default.xml'
 cascade_classifier = cv2.CascadeClassifier(CASC_PATH)
-READ_CSV_AT="./temp/train.csv"
-SAVE_IMG_AT="./temp/data_training.npy"
-SAVE_LAB_AT="./temp/labels_training.npy"
-# --------------------------------------------------------------------------
-anger=0
-happy=0
-sad=0
-surprised=0
-neutral=0
-#------------------------------------------------
+READ_CSV_AT = {
+    "train": "./data/train.csv",
+    "test": "./data/test.csv"
+}
+SAVE_IMG_AT = {
+    "train": "./data/data_train.npy",
+    "test": "./data/data_test.npy"
+}
+SAVE_LAB_AT = {
+    "train": "./data/labels_train.npy",
+    "test": "./data/labels_test.npy"
+}
+
+
+
+
 
 def emotion_to_vec(x):
     d = np.zeros(len(EMOTIONS))
     d[x] = 1.0
     return d
+
 
 def data_to_image(data):
     #print data
@@ -63,56 +71,63 @@ def data_to_image(data):
     return image
 
 
+def convert_csv_to_npy(read_csv_at, save_img_at, save_lab_at):
+    data = pd.read_csv(read_csv_at)
+    data.columns = ['emotion', 'pixels', 'Usage']
+    anger = 0
+    happy = 0
+    sad = 0
+    surprised = 0
+    neutral = 0
+    labels = []
+    images = []
+    index = 1
+    total = data.shape[0]
+    for index, row in data.iterrows():
+        if row['emotion'] != 2 and row['emotion'] != 1:
+            if row['emotion'] == 3:
+                row['emotion'] = 1
+                happy += 1
+            elif row['emotion'] == 4:
+                row['emotion'] = 2
+                sad += 1
+            elif row['emotion'] == 5:
+                row['emotion'] = 3
+                surprised += 1
+            elif row['emotion'] == 6:
+                row['emotion'] = 4
+                neutral += 1
+            elif row['emotion'] == 0:
+                anger += 1
 
-data = pd.read_csv(READ_CSV_AT)
+            emotion = emotion_to_vec(row['emotion'])
+            image = data_to_image(row['pixels'])
+            if image is not None:
+                labels.append(emotion)
+                images.append(image)
+            else:
+                pass
 
-labels = []
-images = []
-index = 1
-total = data.shape[0]
-for index, row in data.iterrows():
-    print('---')
-    print(row['emotion'])
-    if row['emotion'] != 2 and row['emotion'] !=1:
-
-        print(row['emotion'])
-        print('---')
-        if row['emotion']== 3:
-            row['emotion']=1
-            happy +=1
-        elif row['emotion']==4:
-            row['emotion']=2
-            sad += 1
-        elif row['emotion']==5:
-            row['emotion']=3
-            surprised += 1
-        elif row['emotion']==6:
-            row['emotion']=4
-            neutral += 1
-        elif row['emotion']==0:
-            anger+=1
+            index += 1
+            if index % 100 == 0:
+                print ("Progreso: {}/{} {:.2f}%".format(index, total, index * 100.0 / total))
+    print("anger ={}".format(anger))
+    print("happy ={}".format(happy))
+    print("surprised ={}".format(surprised))
+    print("sad ={}".format(sad))
+    print("neutral ={}".format(neutral))
+    print("Total: " + str(len(images)))
+    np.save(save_img_at, images)
+    np.save(save_lab_at, labels)
 
 
-        emotion = emotion_to_vec(row['emotion'])
-        image = data_to_image(row['pixels'])
-        if image is not None:
-            # print(np.where(emotion==1.0))
-            labels.append(emotion)
-            images.append(image)
-            #labels.append(emotion)
-            #images.append(flip_image(image))
-        else:
-            # print "Error"
-            print("Error")
+if __name__ == '__main__':
+    PARSER = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    PARSER.add_argument("--for_data", help="Convert the csv for which data [test/train]", type=str, required=True)
+    args = PARSER.parse_args()
+    for_data = args.for_data
 
-        index += 1
-        print ("Progreso: {}/{} {:.2f}%".format(index, total, index * 100.0 / total))
-print ("anger ={}".format(anger))
-print ("happy ={}".format(happy))
-print ("surprised ={}".format(surprised))
-print ("sad ={}".format(sad))
-print ("neutral ={}".format(neutral))
-print ("Total: " + str(len(images)))
-np.save(SAVE_IMG_AT, images)
-np.save(SAVE_LAB_AT, labels)
-
+    read_csv_at = READ_CSV_AT[for_data]
+    save_img_at = SAVE_IMG_AT[for_data]
+    save_lab_at = SAVE_LAB_AT[for_data]
+    convert_csv_to_npy(read_csv_at, save_img_at, save_lab_at)
